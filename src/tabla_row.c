@@ -22,28 +22,26 @@ void tb_row_destroy(tb_row *row)
 tb_row tb_row_parse(const char* row)
 {
     tb_row new_row;
+    new_row.cells = (char**)malloc(sizeof(char*) * 2);
     new_row.num_cells = 0;
-    new_row.cap = 0;
+    new_row.cap = 2;
 
-    if (row[0] == '\n' || row[0] == '\0' || row == NULL)
+    if (row[0] == '\n' || row[0] == '\0' || row == NULL || new_row.cells == NULL)
     {
         new_row.cells = NULL;
         new_row.num_cells = 0;
+        new_row.cap = 0;
         return new_row;
     }
 
-    da_s result = da_s_init(); // Dynamic array of strings where each string represents a cell
     da_c current_cell = da_c_init(); // The current cell we are parsing
 
     for (const char *p = row;; p++)
     {
         if (*p == ',' || *p == '\n' || *p == '\0') // If on a deliminator
         {
-            new_row.num_cells++;
-
-            // TODO modify to use the add cell function
             da_c_push(&current_cell, '\0');
-            da_s_push(&result, strdup(current_cell.data));
+            tb_row_add_cell(&new_row, strdup(current_cell.data));
 
             current_cell.count = 0;
 
@@ -55,7 +53,6 @@ tb_row tb_row_parse(const char* row)
         }
     }
 
-    new_row.cells = result.data;
     return new_row;
 }
 
