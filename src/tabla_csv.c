@@ -47,5 +47,22 @@ tb_csv tb_csv_load(FILE *file)
 
 void tb_csv_write(tb_csv csv, FILE *file)
 {
+    if (csv.rows == NULL || file == NULL) return;
 
+    for (size_t row = 0; row < csv.num_rows; row++)
+    {
+        for (size_t cell = 0; cell < csv.rows[row].num_cells; cell++)
+        {
+            fprintf(file, "%s", csv.rows[row].cells[cell]);
+
+            if (cell != csv.rows[row].num_cells - 1) // If not the last cell in the row
+            {
+                fprintf(file, ",");
+            }
+            else if (row != csv.num_rows - 1) // If not on the last row
+            {
+                fprintf(file, "\n");
+            }
+        }
+    }
 }
