@@ -66,3 +66,22 @@ void tb_csv_write(tb_csv csv, FILE *file)
         }
     }
 }
+
+void tb_csv_insert_row(tb_csv *csv, tb_row row)
+{
+    if (csv == NULL || csv->rows == NULL || row.cells == NULL) return;
+
+    if (csv->num_rows >= csv->cap)
+    {
+        size_t new_cap = csv->cap * 2;
+
+        tb_row *temp = (tb_row*)realloc(csv->rows, new_cap * sizeof(tb_row));
+        if (!temp) return; // TODO handle this properly
+
+        csv->rows = temp;
+        csv->cap = new_cap;
+    }
+
+    csv->rows[csv->num_rows] = row;
+    csv->num_rows++;
+}

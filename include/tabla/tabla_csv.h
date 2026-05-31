@@ -15,4 +15,6 @@ typedef struct tb_csv
 tb_csv tb_csv_load(FILE *file);
 void tb_csv_write(tb_csv csv, FILE *file);
 
+void tb_csv_insert_row(tb_csv *csv, tb_row row);
+
 #endif
