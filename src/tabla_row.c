@@ -2,6 +2,22 @@
 #include <string.h>
 #include "../include/tabla/tabla_row.h"
 
+void tb_row_destroy(tb_row *row)
+{
+    if (row == NULL) return;
+
+    for (size_t i = 0; i < row->num_cells; i++)
+    {
+        free(row->cells[i]);
+        row->cells[i] = NULL;
+    }
+
+    free(row->cells);
+    row->cells = NULL;
+
+    row->num_cells = 0;
+}
+
 tb_row tb_row_parse(const char* row)
 {
     tb_row new_row;
