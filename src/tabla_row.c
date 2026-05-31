@@ -16,12 +16,14 @@ void tb_row_destroy(tb_row *row)
     row->cells = NULL;
 
     row->num_cells = 0;
+    row->cap = 0;
 }
 
 tb_row tb_row_parse(const char* row)
 {
     tb_row new_row;
     new_row.num_cells = 0;
+    new_row.cap = 0;
 
     if (row[0] == '\n' || row[0] == '\0' || row == NULL)
     {
@@ -39,6 +41,7 @@ tb_row tb_row_parse(const char* row)
         {
             new_row.num_cells++;
 
+            // TODO modify to use the add cell function
             da_c_push(&current_cell, '\0');
             da_s_push(&result, strdup(current_cell.data));
 
@@ -54,4 +57,23 @@ tb_row tb_row_parse(const char* row)
 
     new_row.cells = result.data;
     return new_row;
+}
+
+void tb_row_add_cell(tb_row *row, const char* cell)
+{
+    if (row == NULL || cell == NULL) return;
+
+    if (row->num_cells >= row->cap)
+    {
+        size_t new_cap = row->cap * 2;
+
+        char **temp = (char**)realloc(row->cells, new_cap * sizeof(char*));
+        if (!temp) return; // TODO handle properly
+
+        row->cells = temp;
+        row->cap = new_cap;
+    }
+
+    row->cells[row->num_cells] = cell;
+    row->num_cells++;
 }
