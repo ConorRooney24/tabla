@@ -1,4 +1,5 @@
 #include <ord/da.h>
+#include <string.h>
 #include "../include/tabla/tabla_row.h"
 
 tb_row tb_row_parse(const char* row)
