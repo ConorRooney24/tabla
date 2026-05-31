@@ -27,19 +27,7 @@ tb_csv tb_csv_load(FILE *file)
         tb_row row = tb_row_parse(line);
         if (row.cells == NULL) continue; // If the line is blank, we skip to the next one
 
-        if (csv.num_rows >= csv.cap)
-        {
-            size_t new_cap = csv.cap * 2;
-
-            tb_row *temp = (tb_row*)realloc(csv.rows, new_cap * sizeof(tb_row));
-            if (!temp) return csv; // TODO handle this properly
-
-            csv.rows = temp;
-            csv.cap = new_cap;
-        }
-
-        csv.rows[csv.num_rows] = row;
-        csv.num_rows++;
+        tb_csv_insert_row(&csv, row);
     }
 
     return csv;
