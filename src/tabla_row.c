@@ -2,6 +2,23 @@
 #include <string.h>
 #include "../include/tabla/tabla_row.h"
 
+tb_row tb_row_init()
+{
+    tb_row row;
+    row.cells = (char**)malloc(sizeof(char*) * 1);
+    row.cap = 1;
+    row.num_cells = 0;
+
+    if (row.cells == NULL)
+    {
+        row.num_cells = 0;
+        row.cap = 0;
+        free(row.cells);
+    }
+
+    return row;
+}
+
 void tb_row_destroy(tb_row *row)
 {
     if (row == NULL) return;

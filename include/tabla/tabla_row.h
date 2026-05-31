@@ -10,6 +10,7 @@ typedef struct tb_row
     char **cells;
 } tb_row;
 
+tb_row tb_row_init();
 void tb_row_destroy(tb_row *row);
 
 tb_row tb_row_parse(const char* row);
