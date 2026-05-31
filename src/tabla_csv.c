@@ -1,0 +1,51 @@
+#include "../include/tabla/tabla_csv.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+tb_csv tb_csv_load(FILE *file)
+{
+    tb_csv csv;
+
+    if (file == NULL)
+    {
+        free(csv.rows);
+        csv.rows = NULL;
+        csv.num_rows = 0;
+        csv.cap = 0;
+
+        return csv;
+    }
+
+    csv.rows = (tb_row*)malloc(sizeof(tb_row) * 2);
+    csv.num_rows = 0;
+    csv.cap = 2;
+
+    char *line = NULL;
+    size_t cap = 0;
+    while (getline(&line, &cap, file) != -1)
+    {
+        tb_row row = tb_row_parse(line);
+        if (row.cells == NULL) continue; // If the line is blank, we skip to the next one
+
+        if (csv.num_rows >= csv.cap)
+        {
+            size_t new_cap = csv.cap * 2;
+
+            tb_row *temp = (tb_row*)realloc(csv.rows, new_cap * sizeof(tb_row));
+            if (!temp) return csv; // TODO handle this properly
+
+            csv.rows = temp;
+            csv.cap = new_cap;
+        }
+
+        csv.rows[csv.num_rows] = row;
+        csv.num_rows++;
+    }
+
+    return csv;
+}
+
+void tb_csv_write(tb_csv csv, FILE *file)
+{
+
+}
