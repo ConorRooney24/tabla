@@ -55,6 +55,22 @@ void tb_csv_write(tb_csv csv, FILE *file)
     }
 }
 
+void tb_csv_destroy(tb_csv *csv)
+{
+    if (csv == NULL) return;
+
+    for (size_t i = 0; i < csv->num_rows; i++)
+    {
+        tb_row_destroy(&csv->rows[i]);
+    }
+
+    free(csv->rows);
+    csv->rows = NULL;
+
+    csv->num_rows = 0;
+    csv->cap = 0;
+}
+
 void tb_csv_insert_row(tb_csv *csv, tb_row row)
 {
     if (csv == NULL || csv->rows == NULL || row.cells == NULL) return;
