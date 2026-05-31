@@ -2,6 +2,32 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+tb_csv tb_csv_create(tb_row header)
+{
+    tb_csv csv;
+
+    csv.rows = (tb_row*)malloc(sizeof(tb_row) * 2);
+    csv.num_rows = 0;
+    csv.cap = 2;
+
+    if (csv.rows == NULL)
+    {
+        free(csv.rows);
+        csv.num_rows = 0;
+        csv.cap = 0;
+
+        return csv;
+    }
+
+    csv.rows = (tb_row*)malloc(sizeof(tb_row) * 1);
+    csv.num_rows = 0;
+    csv.cap = 1;
+
+    tb_csv_insert_row(&csv, header);
+
+    return csv;
+}
+
 tb_csv tb_csv_load(FILE *file)
 {
     tb_csv csv;
