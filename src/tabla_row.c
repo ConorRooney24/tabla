@@ -2,6 +2,8 @@
 #include <string.h>
 #include "../include/tabla/tabla_row.h"
 
+ORD_DA_INIT(char, da_c)
+
 tb_row tb_row_init()
 {
     tb_row row;
